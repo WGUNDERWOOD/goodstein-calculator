@@ -169,11 +169,19 @@ def goodstein(n, seq_len, colorize=False):
     b = k + 2
 
     print("")
+    print("Term number: " + str(k+1))
+    print("Sequence value: ", end="")
+
     if colorize:
       print('\033[32m' + str(value) + '\033[0m')
     else:
       print(value)
-    print(cantor_in_base(value, b))
+
+    print("Cantor normal form: ", end="")
+    if colorize:
+      print('\033[35m' + cantor_in_base(value, b) + '\033[0m')
+    else:
+      print(cantor_in_base(value, b))
 
     if value == 0:
       return
