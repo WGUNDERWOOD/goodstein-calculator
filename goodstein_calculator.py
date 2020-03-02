@@ -2,10 +2,10 @@
 
 # imports
 # -----------------------------
-import sys
+import re
 import argparse
 
-# parse arguments
+# parse command line arguments
 # -----------------------------
 parser = argparse.ArgumentParser(
   description="Generate a Goodstein sequence started from an initial value")
@@ -16,6 +16,20 @@ args = parser.parse_args()
 # source code
 # -----------------------------
 def expand_in_base(n, b):
+
+  '''expand n in base b, and return a human-readable string'''
+
+  if not type(n) == int:
+    raise(TypeError("n must be an integer"))
+
+  if not n >= 0:
+    raise(ValueError("n must be non-negative"))
+
+  if not type(b) == int:
+    raise(TypeError("b must be an integer"))
+
+  if not b >= 2:
+    raise(ValueError("b must be at least 2"))
 
   # write n in b-ary
   raw_string = ""
@@ -63,10 +77,34 @@ def expand_in_base(n, b):
 
 def max_digit(string):
 
-  return(max([int(x) for x in string if x.isdigit()]))
+  '''return the largest single digit present in a string'''
+
+  if not type(string) == str:
+    raise(TypeError("string must be a string"))
+
+  regex = [x for x in re.split("[^0-9]", string) if x != ""]
+
+  return max(map(int, regex))
 
 
 def cantor_in_base(n, b):
+
+  '''write n in cantor normal form to base b, and return a human-readable string'''
+
+  if not type(n) == int:
+    raise(TypeError("n must be an integer"))
+
+  if not n >= 0:
+    raise(ValueError("n must be non-negative"))
+
+  if not type(b) == int:
+    raise(TypeError("b must be an integer"))
+
+  if not b >= 2:
+    raise(ValueError("b must be at least 2"))
+
+  if n == 0:
+    return "0"
 
   cantor_expansion = expand_in_base(n, b)
   m = max_digit(cantor_expansion)
@@ -81,6 +119,23 @@ def cantor_in_base(n, b):
 
 def goodstein_iter(n, b):
 
+  '''perform a single Goodstein iteration with base b, and return an integer'''
+
+  if not type(n) == int:
+    raise(TypeError("n must be an integer"))
+
+  if not n >= 0:
+    raise(ValueError("n must be non-negative"))
+
+  if not type(b) == int:
+    raise(TypeError("b must be an integer"))
+
+  if not b >= 2:
+    raise(ValueError("b must be at least 2"))
+
+  if n == 0:
+    return 0
+
   cantor_expansion = cantor_in_base(n, b)
   substituted_base = cantor_expansion.replace(str(b), str(b+1))
   fix_exponent_symbol = substituted_base.replace("^", "**")
@@ -91,6 +146,20 @@ def goodstein_iter(n, b):
 
 def goodstein(n, seq_len):
 
+  '''generate a Goodstein sequence with given initial value and length'''
+
+  if not type(n) == int:
+    raise(TypeError("n must be an integer"))
+
+  if not n >= 0:
+    raise(ValueError("n must be non-negative"))
+
+  if not type(seq_len) == int:
+    raise(TypeError("seq_len must be an integer"))
+
+  if not seq_len >= 1:
+    raise(ValueError("seq_len must be at least one"))
+
   value = n
 
   for k in range(0, seq_len):
@@ -100,6 +169,9 @@ def goodstein(n, seq_len):
     print("")
     print(value)
     print(cantor_in_base(value, b))
+
+    if value == 0:
+      return
 
     value = goodstein_iter(value, b)
 
