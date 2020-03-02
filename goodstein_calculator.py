@@ -11,6 +11,8 @@ parser = argparse.ArgumentParser(
   description="Generate a Goodstein sequence started from an initial value")
 parser.add_argument("initial_value", help="the initial value of the Goodstein sequence", type=int)
 parser.add_argument("sequence_length", help="the number of terms to compute", type=int)
+parser.add_argument("--colorize", help="colorize terminal output",
+                    action="store_true")
 args = parser.parse_args()
 
 # source code
@@ -144,7 +146,7 @@ def goodstein_iter(n, b):
   return(eval_and_reduce)
 
 
-def goodstein(n, seq_len):
+def goodstein(n, seq_len, colorize=False):
 
   '''generate a Goodstein sequence with given initial value and length'''
 
@@ -167,7 +169,10 @@ def goodstein(n, seq_len):
     b = k + 2
 
     print("")
-    print(value)
+    if colorize:
+      print('\033[32m' + str(value) + '\033[0m')
+    else:
+      print(value)
     print(cantor_in_base(value, b))
 
     if value == 0:
@@ -183,4 +188,5 @@ def goodstein(n, seq_len):
 # -----------------------------
 initial_value = args.initial_value
 sequence_length = args.sequence_length
-goodstein(initial_value, sequence_length)
+colorize = args.colorize
+goodstein(initial_value, sequence_length, colorize)

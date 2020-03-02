@@ -6,7 +6,7 @@ Python script for calculating Goodstein sequences
 - Python 3
 
 ## Usage
-```python3 goodstein_calculator.py INITIAL_VALUE SEQUENCE_LENGTH```
+```python3 goodstein_calculator.py INITIAL_VALUE SEQUENCE_LENGTH --colorize```
 
 ## Notes
 - For initial values of 3 or less, the Goodstein sequence rapidly converges to zero and terminates.
