@@ -173,7 +173,8 @@ def goodstein(n, seq_len):
     if value == 0:
       return
 
-    value = goodstein_iter(value, b)
+    if not k == seq_len - 1:
+      value = goodstein_iter(value, b)
 
   return
 
