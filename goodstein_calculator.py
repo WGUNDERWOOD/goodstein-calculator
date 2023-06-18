@@ -4,6 +4,9 @@
 # -----------------------------
 import re
 import argparse
+import sys
+
+sys.set_int_max_str_digits(1000000000)
 
 # parse command line arguments
 # -----------------------------
