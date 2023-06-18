@@ -14,7 +14,7 @@ parser = argparse.ArgumentParser(
   description="Generate a Goodstein sequence started from an initial value")
 parser.add_argument("initial_value", help="the initial value of the Goodstein sequence", type=int)
 parser.add_argument("sequence_length", help="the number of terms to compute", type=int)
-parser.add_argument("--colorize", help="colorize terminal output",
+parser.add_argument("-c", "--colorize", help="colorize terminal output",
                     action="store_true")
 args = parser.parse_args()
 
@@ -71,11 +71,11 @@ def expand_in_base(n, b):
       if power == "0":
         readable_list[k] = coefficient
       elif power == "1":
-        readable_list[k] = coefficient + "*" + base
+        readable_list[k] = coefficient + " * " + base
       else:
-        readable_list[k] = coefficient + "*" + base + "^" + power
+        readable_list[k] = coefficient + " * " + base + "^" + power
 
-  readable_string = "+".join([s for s in readable_list if not s ==""])
+  readable_string = " + ".join([s for s in readable_list if not s ==""])
 
   return readable_string
 
@@ -172,17 +172,25 @@ def goodstein(n, seq_len, colorize=False):
     b = k + 2
 
     print("")
-    print("Term number: " + str(k+1))
+    print("Term number: ", end="")
+    print('\033[96m' + str(k+1) + '\033[0m')
     print("Sequence value: ", end="")
 
     if colorize:
-      print('\033[32m' + str(value) + '\033[0m')
+      print('\033[92m' + str(value) + '\033[0m')
     else:
       print(value)
 
+    print("Number of digits: ", end="")
+
+    if colorize:
+      print('\033[93m' + str(len(str(value))) + '\033[0m')
+    else:
+      print(len(str(value)))
+
     print("Cantor normal form: ", end="")
     if colorize:
-      print('\033[35m' + cantor_in_base(value, b) + '\033[0m')
+      print('\033[95m' + cantor_in_base(value, b) + '\033[0m')
     else:
       print(cantor_in_base(value, b))
 
